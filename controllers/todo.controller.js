@@ -84,6 +84,15 @@ module.exports.createTodo = async (request, reply) => {
         const result = await newTodo.save();
         return reply.code(201).send({ message: 'Todo tillagd!', newTodo: result });
     } catch (error) {
+        //Om det är validation error
+        if (error.message.includes('Todo validation failed: status:')) {
+            err = errorHandler.createError(
+                'Bad request',
+                400,
+                'Status måste vara Ej påbörjad, Pågående eller Avklarad'
+            );
+            return reply.code(err.https_response.code).send(err);
+        }
         return reply.code(500).send(error);
     }
 };
