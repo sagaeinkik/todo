@@ -4,7 +4,7 @@ const errorHandler = require('../utils/errMsg');
 const Todo = require('../models/todoModel');
 
 //Nytt error-objekt
-const err = errorHandler.createError();
+let err = errorHandler.createError();
 
 //Hämta alla todos
 module.exports.getAllTodos = async (request, reply) => {
@@ -28,7 +28,7 @@ module.exports.getAllTodos = async (request, reply) => {
 };
 
 //Hämta enskild todo
-module.exports.getTodo = async (request, reply) => {
+module.exports.getOneTodo = async (request, reply) => {
     errorHandler.resetErrors(err);
 
     //ID
@@ -82,7 +82,7 @@ module.exports.createTodo = async (request, reply) => {
         });
 
         const result = await newTodo.save();
-        return reply.code(201).send(result);
+        return reply.code(201).send({ message: 'Todo tillagd!', newTodo: result });
     } catch (error) {
         return reply.code(500).send(error);
     }
@@ -103,8 +103,13 @@ module.exports.updateTodo = async (request, reply) => {
             return reply.code(err.https_response.code).send(err);
         }
 
-        return reply.send(updatedTodo);
+        return reply.send({ message: 'Todo uppdaterad!', updatedTodo });
     } catch (error) {
+        if (error.message.includes('Cast to ObjectId failed')) {
+            err = errorHandler.createError('Not found', 404, 'ID hittades ej');
+            return reply.code(err.https_response.code).send(err);
+        }
+
         return reply.code(500).send(error);
     }
 };
@@ -123,7 +128,7 @@ module.exports.deleteTodo = async (request, reply) => {
             return reply.code(err.https_response.code).send(err);
         }
 
-        return reply.send(deletedTodo);
+        return reply.send({ message: 'Todo raderad', deletedTodo });
     } catch (error) {
         return reply.code(500).send(error);
     }

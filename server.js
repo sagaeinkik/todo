@@ -23,6 +23,8 @@ fastify.get('/', async (request, reply) => {
     };
 });
 
+fastify.register(require('./routes/todo.routes'));
+
 //DB-anslutning
 function dbConnect() {
     mongoose
