@@ -48,7 +48,7 @@ module.exports.getOneTodo = async (request, reply) => {
         return reply.send(result);
     } catch (error) {
         if (error.message.includes('Cast to ObjectId failed')) {
-            err = errorHandler.createError('Not found', 404, 'ID hittades ej');
+            err = errorHandler.createError('Not found', 404, 'Todo med angivet ID hittades ej');
             return reply.code(err.https_response.code).send(err);
         }
 
@@ -120,7 +120,7 @@ module.exports.updateTodo = async (request, reply) => {
         return reply.send({ message: 'Todo uppdaterad!', updatedTodo });
     } catch (error) {
         if (error.message.includes('Cast to ObjectId failed')) {
-            err = errorHandler.createError('Not found', 404, 'ID hittades ej');
+            err = errorHandler.createError('Not found', 404, 'Todo med angivet ID hittades ej');
             return reply.code(err.https_response.code).send(err);
         }
 
