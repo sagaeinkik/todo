@@ -47,6 +47,11 @@ module.exports.getOneTodo = async (request, reply) => {
         //Returnera
         return reply.send(result);
     } catch (error) {
+        if (error.message.includes('Cast to ObjectId failed')) {
+            err = errorHandler.createError('Not found', 404, 'ID hittades ej');
+            return reply.code(err.https_response.code).send(err);
+        }
+
         return reply.code(500).send(error);
     }
 };
