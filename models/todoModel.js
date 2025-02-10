@@ -9,7 +9,6 @@ const todoSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: [true, 'Du måste fylla i en beskrivning'],
     },
     status: {
         type: String,
