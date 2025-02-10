@@ -66,7 +66,6 @@ module.exports.createTodo = async (request, reply) => {
     //Valideringsarray
     const validation = [
         errorHandler.checkEmpty(title, 'Titel'),
-        errorHandler.checkEmpty(description, 'Beskrivning'),
         errorHandler.checkEmpty(status, 'Status'),
     ];
 
